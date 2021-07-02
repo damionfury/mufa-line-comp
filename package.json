@@ -1,0 +1,43 @@
+{
+  "name": "mufa-line-comp",
+  "description": "A simple app to track score and co-ed line composition for Madison Ultimate Frisbee Association (mufa.org). The author is not affiliated with the MUFA in any way and no part of this app should be considered to represent the MUFA in any way.",
+  "version": "0.9.0",
+  "license": "CC-BY-NC-4.0",
+  "author": "Mark Lyon <damionfury@gmail.com>",
+  "dependencies": {
+    "@material-ui/core": "^4.11.4",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "4.0.3",
+    "react-toggle-component": "^3.0.8",
+    "styled-components": "^5.3.0",
+    "web-vitals": "^1.0.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
