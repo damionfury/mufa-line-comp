@@ -1,50 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Button from '@material-ui/core/Button';
-import { Toggle } from 'react-toggle-component';
+import Grid from '@material-ui/core/Grid';
+import Switch from '@material-ui/core/Switch';
+import Score from './components/Score';
 import './index.css';
-import reportWebVitals from './reportWebVitals';
 
 // TODO:
-// - GET INTO GITHUB!!!
-// - Refactor to use the material-ui Switch component instead of Toggle
 // - Style into visually distinguishable sections
 // - Make it fairly pretty
 // - Setup S3 bucket to host
 // - Get running on S3
 // - Document how to deploy
 // - Build a history section
+// - Build a way to save & load games. Consider base64 encode of data and bit.ly for a shortcode link.
 
 
-function Score(props) {
-  const teamNum = (props.team === "Us") ? 0 : 1;
-  
-  return (
-    <div className="score">
-      <Button
-        variant="contained" 
-        color="primary" 
-        className="decrement" 
-        onClick={ () => props.onClick(teamNum,-1) }
-      >
-          -
-      </Button>
-      
-      {props.team}: {props.value}
-      
-      <Button
-        variant="contained" 
-        color="primary" 
-        className="decrement" 
-        onClick={ () => props.onClick(teamNum,1) }
-      >
-        +
-      </Button>
-    </div>
-  );
-}
 
 class App extends React.Component {
+  
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -107,52 +82,63 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="tracker">
-        <div className="scores">
-          <Score
-            team="Us"
-            value={this.state.score[0]}
-            onClick={ (team,value) => this.updateScore(team,value) }
-          />
-          <Score
-            team="Them"
-            value={this.state.score[1]}
-            onClick={ (team,value) => this.updateScore(team,value) }
-          />
-        </div>
-        <div className="line-comp">
-          <div>FMP: {this.state.lineComp[0]}</div>
-          <div>MMP: {this.state.lineComp[1]}</div>
-        </div>
-        <div className="setup">
-          Setup:
-          <div className="startSeed">
-            <label htmlFor="startSeed">
-              4 FMP
-              <Toggle
-                name="startSeed"
-                leftBackgroundColor="purple"
-                rightBackgroundColor="teal"
-                borderColor="white"
-                knobColor="white"
-                onToggle={ (e) => this.changeStartSeed(e.target.checked) }
-              />
-              4 MMP
-            </label>
-          </div>
-          <Button
-            name="reset"
-            onClick={ () => this.resetScore() }
-            variant="contained"
-            color="primary"
-          >
-            Reset
-          </Button>
-        </div>
-        <div className="history">
-
-        </div>
-      </div>
+      <Grid 
+        container
+        direction="column"
+        justifyContent="center"
+        alignItems="stretch"
+        className="tracker"
+        spacing={1}
+        >
+          <Grid container item xs={12} sm={6} spacing={1} className="line-comp"
+            direction="row" justifyContent="center" alignItems="center">
+              <Grid container item xs={6} sm={3} spacing={0} className="fmp" direction="column">
+                <Grid item className="fmp-title">FMP</Grid>
+                <Grid item className="fmp-comp">{this.state.lineComp[0]}</Grid>
+              </Grid>
+              <Grid container item xs={6} sm={3} spacing={0} className="mmp" direction="column">
+                <Grid item className="mmp-title">MMP</Grid>
+                <Grid item className="mmp-comp">{this.state.lineComp[1]}</Grid>
+              </Grid>
+          </Grid>
+          <Grid container item xs={12} spacing={1} className="scores" direction="column">
+            <Score
+              team="Us"
+              value={this.state.score[0]}
+              onClick={ (team,value) => this.updateScore(team,value) }
+            />
+            <Score
+              team="Them"
+              value={this.state.score[1]}
+              onClick={ (team,value) => this.updateScore(team,value) }
+            />
+          </Grid>
+          <Grid container item xs={6} spacing={1} className="setup" >
+            Setup:
+            <div className="startSeed">
+              <label htmlFor="startSeed">
+                4 FMP
+                <Switch
+                  name="startSeed"
+                  color="primary"
+                  checked={this.state.startMMP4}
+                  onChange={ (e) => this.changeStartSeed(e.target.checked) }
+                />
+                4 MMP
+              </label>
+            </div>
+            <Button
+              name="reset"
+              onClick={ () => this.resetScore() }
+              variant="contained"
+              color="primary"
+            >
+              Reset
+            </Button>
+          </Grid>
+          <Grid container item xs={6} spacing={1} className="history">
+          </Grid>
+      </Grid>
     )
   }
 
@@ -165,8 +151,3 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
