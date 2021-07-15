@@ -44,7 +44,7 @@ export default function Score(props) {
         teamNum = (props.team === "Us") ? 0 : 1;
     
     return (
-        <Grid container item xs={12} sm={6} spacing={1} className={classes.score}
+        <Grid container item xs={12} spacing={1} className={classes.score}
             direction="row" justifyContent="center" alignItems="center">
             <Grid item xs={2} className={classes.buttons}>
                 <Button

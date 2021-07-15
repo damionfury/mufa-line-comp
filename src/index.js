@@ -3,7 +3,9 @@ import ReactDOM from 'react-dom';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Switch from '@material-ui/core/Switch';
+
 import Score from './components/Score';
+import LineComp from './components/LineComp';
 import './index.css';
 
 // TODO:
@@ -84,34 +86,32 @@ class App extends React.Component {
     return (
       <Grid 
         container
-        direction="column"
+        direction="row"
         justifyContent="center"
-        alignItems="stretch"
+        alignItems="center"
         className="tracker"
-        spacing={1}
+        spacing={3}
         >
-          <Grid container item xs={12} sm={6} spacing={1} className="line-comp"
-            direction="row" justifyContent="center" alignItems="center">
-              <Grid container item xs={6} sm={3} spacing={0} className="fmp" direction="column">
-                <Grid item className="fmp-title">FMP</Grid>
-                <Grid item className="fmp-comp">{this.state.lineComp[0]}</Grid>
-              </Grid>
-              <Grid container item xs={6} sm={3} spacing={0} className="mmp" direction="column">
-                <Grid item className="mmp-title">MMP</Grid>
-                <Grid item className="mmp-comp">{this.state.lineComp[1]}</Grid>
+          <Grid container item xs={12} sm={6} spacing={2} className="comp_score"
+            direction="row" justifyContent="center" alignItems="center" flexWrap="wrap">
+            <Grid item className="header">Line Composition</Grid>
+            <LineComp fmp={this.state.lineComp[0]} mmp={this.state.lineComp[1]}></LineComp>
+            <Grid container item xs={12} spacing={2} className="scores" direction="column" alignItems="center">
+              <Grid item className="header">Score</Grid>
+                <Score
+                  team="Us"
+                  value={this.state.score[0]}
+                  onClick={ (team,value) => this.updateScore(team,value) }
+                />
+                <Score
+                  team="Them"
+                  value={this.state.score[1]}
+                  onClick={ (team,value) => this.updateScore(team,value) }
+                />
               </Grid>
           </Grid>
-          <Grid container item xs={12} spacing={1} className="scores" direction="column">
-            <Score
-              team="Us"
-              value={this.state.score[0]}
-              onClick={ (team,value) => this.updateScore(team,value) }
-            />
-            <Score
-              team="Them"
-              value={this.state.score[1]}
-              onClick={ (team,value) => this.updateScore(team,value) }
-            />
+          <Grid container item xs={12} sm={6} spacing={1} className="history">
+            History here
           </Grid>
           <Grid container item xs={6} spacing={1} className="setup" >
             Setup:
@@ -136,8 +136,7 @@ class App extends React.Component {
               Reset
             </Button>
           </Grid>
-          <Grid container item xs={6} spacing={1} className="history">
-          </Grid>
+          
       </Grid>
     )
   }
