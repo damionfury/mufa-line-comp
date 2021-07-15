@@ -30,8 +30,11 @@ const useStyles = makeStyles((theme) => ({
         color: "purple",
         background: "white",
         textAlign: "center",
-        border: "1",
-        borderColor: "purple"
+        border: 1,
+        borderColor: "purple",
+        borderStyle: "solid",
+        borderTop: 0,
+        fontSize: "20px",
     },
     mmp_comp: {
         color: "teal",
@@ -39,6 +42,9 @@ const useStyles = makeStyles((theme) => ({
         textAlign: "center",
         border: 1,
         borderColor: "teal",
+        borderStyle: "solid",
+        borderTop: 0,
+        fontSize: "20px",
     }
   }));
 
@@ -46,7 +52,7 @@ export default function LineComp(props) {
     const classes = useStyles();
     
     return (
-        <Grid container item xs={12} spacing = {0} className={classes.root}>
+        <Grid container item xs={12} spacing = {1} className={classes.root}>
             <Grid container item xs={5} sm={3} spacing={0} className={classes.fmp} direction="column">
                 <Grid item className={classes.fmp_title}>FMP</Grid>
                 <Grid item className={classes.fmp_comp}>{props.fmp}</Grid>

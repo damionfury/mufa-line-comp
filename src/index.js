@@ -1,11 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import Switch from '@material-ui/core/Switch';
 
 import Score from './components/Score';
 import LineComp from './components/LineComp';
+import Setup from './components/Setup';
 import './index.css';
 
 // TODO:
@@ -110,32 +109,10 @@ class App extends React.Component {
                 />
               </Grid>
           </Grid>
-          <Grid container item xs={12} sm={6} spacing={1} className="history">
+          {/* <Grid container item xs={12} sm={6} spacing={1} className="history">
             History here
-          </Grid>
-          <Grid container item xs={6} spacing={1} className="setup" >
-            Setup:
-            <div className="startSeed">
-              <label htmlFor="startSeed">
-                4 FMP
-                <Switch
-                  name="startSeed"
-                  color="primary"
-                  checked={this.state.startMMP4}
-                  onChange={ (e) => this.changeStartSeed(e.target.checked) }
-                />
-                4 MMP
-              </label>
-            </div>
-            <Button
-              name="reset"
-              onClick={ () => this.resetScore() }
-              variant="contained"
-              color="primary"
-            >
-              Reset
-            </Button>
-          </Grid>
+          </Grid> */}
+          <Setup startMMP4={this.state.startMMP4} onChange={(e) => this.changeStartSeed(e.target.checked)} resetScore={ () => this.resetScore() }></Setup>
           
       </Grid>
     )
