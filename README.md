@@ -1,6 +1,10 @@
-# Getting Started with Create React App
+# Line Comp for MUFA README
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). Frisbee icon made by [Freepik](https://www.freepik.com) from [www.flaticon.com](https://www.flaticon.com/). (Attribution for these things to be added to a future Credits page)
+
+## Purpose
+
+A simple app to track score and co-ed line composition for Madison Ultimate Frisbee Association (mufa.org) games. The author is not affiliated with MUFA in any way. The use of its name and acronym does not constitute an endorsement of the app by MUFA, and no part of this app should be considered to represent MUFA in any way.
 
 ## Available Scripts
 
@@ -27,44 +31,29 @@ It correctly bundles React in production mode and optimizes the build for the be
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Deployment
 
-### `yarn eject`
+This app is built to be run from an AWS S3 bucket configured for a static websites. Deployment is a 3 step process.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Step 1 – Build the app
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1. Add the Cloudflare Web Analytics token into `public/index.html` where it says `ADD_TOKEN_BEFORE_DEPLOY`
+2. Build the app: `yarn build`
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Step 2 - Deploy the app
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+1. Login to the AWS console
+2. Get into the S3 bucket you want to upload to
+3. Upload everything from the `build/` folder
+4. Make sure the content was set to be publicly accessible
 
-## Learn More
+### Step 3 - Cleanup (semi-optional)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+1. Remove credentials/tokens that you added in step 1 – never commit credentials/tokens to a repository; if you don't cleanup you are sure to forget and commit them later
+2. Delete the `build/` folder – not strictly necessary but it can help you be confident a build was successful
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## TODO list
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+1. Build a history section so you can see the score and line comp history during a game
+2. Build a way to save & load games – most likely via a base64 encode of the data and a bit.ly short code
+3. Build a basic deploy script that can do all of the steps
