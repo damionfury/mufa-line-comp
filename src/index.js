@@ -1,18 +1,35 @@
+// Core App imports
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+// Material UI imports
 import Grid from '@material-ui/core/Grid';
 
+// Project component imports
 import Score from './components/Score';
 import LineComp from './components/LineComp';
 import Setup from './components/Setup';
 import './index.css';
 
+// Confetti and configure it
+import Confetti from 'react-dom-confetti';
+
+const config = {
+  angle: 90,
+  spread: "25",
+  startVelocity: 40,
+  elementCount: 70,
+  dragFriction: "0.15",
+  duration: "2000",
+  stagger: 3,
+  width: "8px",
+  height: "10px",
+  perspective: "500px",
+  colors: ["#a864fd", "#29cdff", "#78ff44", "#ff718d", "#fdff6a"]
+};
+
 // TODO:
-// - Style into visually distinguishable sections
 // - Make it fairly pretty
-// - Setup S3 bucket to host
-// - Get running on S3
-// - Document how to deploy
 // - Build a history section
 // - Build a way to save & load games. Consider base64 encode of data and bit.ly for a shortcode link.
 
@@ -27,6 +44,7 @@ class App extends React.Component {
       score: [0,0],
       startMMP4: false,
       lineComp: [4,3],
+      weWin: false,
     }
   }
 
@@ -76,6 +94,7 @@ class App extends React.Component {
 
     this.setState({
       score: current,
+      weWin: (current[0] === 13 ? true : false),
     });
 
     this.updateLineComp(current,this.state.startMMP4);
@@ -113,13 +132,24 @@ class App extends React.Component {
             History here
           </Grid> */}
           <Setup startMMP4={this.state.startMMP4} onChange={(e) => this.changeStartSeed(e.target.checked)} resetScore={ () => this.resetScore() }></Setup>
-          
+          <Grid container item xs={12} spacing={1} className="confetti" 
+            direction="row" justifyContent="center" alignItems="center">
+            <Confetti active={this.state.weWin} config={ config }/>
+          </Grid>
       </Grid>
     )
   }
 
 }
 
+export function onRenderBody( { setPostBodyComponents } ) {
+  setPostBodyComponents([
+      <script 
+      defer 
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon='{"token": "YOUR__TOKEN__HERE"}'></script>,
+  ]);
+}
 
 ReactDOM.render(
   <React.StrictMode>

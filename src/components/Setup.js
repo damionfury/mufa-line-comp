@@ -32,7 +32,8 @@ export default function Setup(props) {
     const classes = useStyles();
     
     return (
-        <Grid container item xs={6} spacing={1} className={classes.setup} >
+        <Grid container item xs={6} spacing={1} className={classes.setup}
+            direction="column" justifyContent="center" alignItems="center">
             <Grid item className="header">Setup</Grid>
             <Grid item className="startSeed">
                 <label htmlFor="startSeed">
