@@ -201,11 +201,11 @@ class App extends React.Component {
             direction="row" justifyContent="center" alignItems="center">
             <Confetti active={this.state.weWin} config={ configetti }/>
           </Grid>
-          <Grid container item xs={12} spacing={1} className="qrcode" 
-            direction="row" justifyContent="center" alignItems="center">
+          <Grid container item xs={12} spacing={2} className="qrcode" 
+            direction="column" justifyContent="center" alignItems="center">
+            <Grid item className="header">QR to Share with Team</Grid>
             <QRcode value={URLBASE + '?gameId=' + this.state.gameId} />
           </Grid>
-          
       </Grid>
     )
   }
