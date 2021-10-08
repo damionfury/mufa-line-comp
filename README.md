@@ -55,5 +55,5 @@ This app is built to be run from an AWS S3 bucket configured for a static websit
 ## TODO list
 
 1. Build a history section so you can see the score and line comp history during a game
-2. Build a way to save & load games – most likely via a base64 encode of the data and a bit.ly short code
-3. Build a basic deploy script that can do all of the steps
+2. Build a basic deploy script that can do all of the steps
+3. Build an interface and logic to handle conflicts between local and remote game states.
