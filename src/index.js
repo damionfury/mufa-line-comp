@@ -6,6 +6,9 @@ import axios from 'axios';
 // Material UI imports
 import Grid from '@material-ui/core/Grid';
 
+// QR code library to get others on the same game
+import QRcode from 'qrcode.react';
+
 // Project component imports
 import Score from './components/Score';
 import LineComp from './components/LineComp';
@@ -30,9 +33,9 @@ const configetti = {
 };
 // Done with confetti
 
-// API Base
+// Base URL constants
 const APIBASE = 'https://7hjztxhavj.execute-api.us-west-2.amazonaws.com/prod/';
-
+const URLBASE = (document.domain === 'localhost' || document.domain === '192.168.0.169') ? 'http://192.168.0.169:3000' : 'http://' + document.domain;
 
 // TODO:
 // - Build a history section
@@ -198,6 +201,11 @@ class App extends React.Component {
             direction="row" justifyContent="center" alignItems="center">
             <Confetti active={this.state.weWin} config={ configetti }/>
           </Grid>
+          <Grid container item xs={12} spacing={1} className="qrcode" 
+            direction="row" justifyContent="center" alignItems="center">
+            <QRcode value={URLBASE + '?gameId=' + this.state.gameId} />
+          </Grid>
+          
       </Grid>
     )
   }
