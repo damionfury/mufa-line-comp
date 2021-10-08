@@ -1,6 +1,7 @@
 // Core App imports
 import React from 'react';
 import ReactDOM from 'react-dom';
+import axios from 'axios';
 
 // Material UI imports
 import Grid from '@material-ui/core/Grid';
@@ -14,7 +15,7 @@ import './index.css';
 // Confetti and configure it
 import Confetti from 'react-dom-confetti';
 
-const config = {
+const configetti = {
   angle: 90,
   spread: "25",
   startVelocity: 40,
@@ -27,6 +28,11 @@ const config = {
   perspective: "500px",
   colors: ["#a864fd", "#29cdff", "#78ff44", "#ff718d", "#fdff6a"]
 };
+// Done with confetti
+
+// API Base
+const APIBASE = 'https://7hjztxhavj.execute-api.us-west-2.amazonaws.com/prod/';
+
 
 // TODO:
 // - Make it fairly pretty
@@ -45,7 +51,41 @@ class App extends React.Component {
       startMMP4: false,
       lineComp: [4,3],
       weWin: false,
+      gameId: '',
+      lastChange: Math.floor(Date.now() / 1000)
     }
+  }
+
+  async componentDidMount() {
+    const queryParams = new URLSearchParams(window.location.search),
+      gameId = queryParams.get('gameId');
+
+    if (gameId === null) {
+      queryParams.set('gameId', Date.now().toString(16));
+      document.location.search = queryParams;
+    }
+
+    this.setState({
+      gameId: queryParams.get('gameId'),
+    });
+    
+    this.getGameState(gameId);
+  }
+
+  async getGameState(gameId = this.state.gameId ) {
+    const URL = APIBASE + gameId;
+    axios.get(URL)
+      .then( (res) => {
+        this.setState({
+          score: [ parseInt(res.data.score[0]), parseInt(res.data.score[1]) ],
+          lineComp: [ parseInt(res.data.lineComp[0]), parseInt(res.data.lineComp[1]) ],
+          startMMP4: res.data.startMMP4,
+          lastChange: parseInt(res.data.lastChange)
+        });
+      })
+      .catch ( (error) => {
+        // TODO: If it's a 404 then we should immediately save the current state.
+      });
   }
 
   changeStartSeed(value) {
@@ -132,9 +172,10 @@ class App extends React.Component {
             History here
           </Grid> */}
           <Setup startMMP4={this.state.startMMP4} onChange={(e) => this.changeStartSeed(e.target.checked)} resetScore={ () => this.resetScore() }></Setup>
+          {this.state.gameId}
           <Grid container item xs={12} spacing={1} className="confetti" 
             direction="row" justifyContent="center" alignItems="center">
-            <Confetti active={this.state.weWin} config={ config }/>
+            <Confetti active={this.state.weWin} config={ configetti }/>
           </Grid>
       </Grid>
     )
