@@ -212,15 +212,6 @@ class App extends React.Component {
 
 }
 
-export function onRenderBody( { setPostBodyComponents } ) {
-  setPostBodyComponents([
-      <script 
-      defer 
-      src="https://static.cloudflareinsights.com/beacon.min.js"
-      data-cf-beacon='{"token": "YOUR__TOKEN__HERE"}'></script>,
-  ]);
-}
-
 ReactDOM.render(
   <React.StrictMode>
     <App />

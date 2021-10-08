@@ -37,7 +37,7 @@ This app is built to be run from an AWS S3 bucket configured for a static websit
 
 ### Step 1 – Build the app
 
-1. Add the Cloudflare Web Analytics token into `public/index.html` where it says `ADD_TOKEN_BEFORE_DEPLOY`
+1. Make sure the Cloudflare Web Analytics token in `public/index.html` is the correct token.
 2. Build the app: `yarn build`
 
 ### Step 2 - Deploy the app
@@ -49,7 +49,7 @@ This app is built to be run from an AWS S3 bucket configured for a static websit
 
 ### Step 3 - Cleanup (semi-optional)
 
-1. Remove credentials/tokens that you added in step 1 – never commit credentials/tokens to a repository; if you don't cleanup you are sure to forget and commit them later
+1. You really should remove the token after deployment so you don't commit the token to the repo. It's right in the page source, so it's not _that_ big a deal but still.
 2. Delete the `build/` folder – not strictly necessary but it can help you be confident a build was successful
 
 ## TODO list
