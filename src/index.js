@@ -35,9 +35,8 @@ const APIBASE = 'https://7hjztxhavj.execute-api.us-west-2.amazonaws.com/prod/';
 
 
 // TODO:
-// - Make it fairly pretty
 // - Build a history section
-// - Build a way to save & load games. Consider base64 encode of data and bit.ly for a shortcode link.
+// - Build out-of-sync detection for when local state is behind and someone tries to make changes. Goes in setRemoteState
 
 
 
@@ -69,12 +68,13 @@ class App extends React.Component {
       gameId: queryParams.get('gameId'),
     });
     
-    this.getGameState(gameId);
+    await this.getRemoteState(gameId);
+
+    this.interval = setInterval( async (gameId) => await this.getRemoteState(gameId), 2000 );
   }
 
-  async getGameState(gameId = this.state.gameId ) {
-    const URL = APIBASE + gameId;
-    axios.get(URL)
+  async getRemoteState( gameId = this.state.gameId ) {
+    axios.get(APIBASE + gameId)
       .then( (res) => {
         this.setState({
           score: [ parseInt(res.data.score[0]), parseInt(res.data.score[1]) ],
@@ -85,7 +85,18 @@ class App extends React.Component {
       })
       .catch ( (error) => {
         // TODO: If it's a 404 then we should immediately save the current state.
+        if (error.response.status === 404) {
+          this.setRemoteState(this.state);
+        }
       });
+  }
+
+  async setRemoteState(state = this.state) {
+    // TODO: Pull remote game state first and compare to lastChange. Prompt if there's a conflict.
+    axios.put(APIBASE + state.gameId, state)
+    .catch ( (error) => {
+      console.error(error);
+    });
   }
 
   changeStartSeed(value) {
@@ -109,7 +120,8 @@ class App extends React.Component {
       totalScore = score[0] + score[1],
       halfScoreRndDwn = Math.floor( (totalScore + seed) / 2 ),
       extraFMP = halfScoreRndDwn % 2,
-      lineComp = this.state.lineComp.slice();
+      lineComp = this.state.lineComp.slice(),
+      changeTime = Date.now();
 
     lineComp[0] = 3 + extraFMP;
     lineComp[1] = 4 - extraFMP;
@@ -121,6 +133,16 @@ class App extends React.Component {
     this.setState({
       lineComp: lineComp,
     });
+
+    // This is ugly but I don't really have time to build a custom async state update function.
+    this.setRemoteState({
+      gameId: this.state.gameId,
+      score: score,
+      lineComp: lineComp,
+      startMMP4: startMMP4,
+      lastChange: changeTime,
+    });
+
   }
 
   updateScore(team,value) {
@@ -172,7 +194,6 @@ class App extends React.Component {
             History here
           </Grid> */}
           <Setup startMMP4={this.state.startMMP4} onChange={(e) => this.changeStartSeed(e.target.checked)} resetScore={ () => this.resetScore() }></Setup>
-          {this.state.gameId}
           <Grid container item xs={12} spacing={1} className="confetti" 
             direction="row" justifyContent="center" alignItems="center">
             <Confetti active={this.state.weWin} config={ configetti }/>
