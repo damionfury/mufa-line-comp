@@ -118,6 +118,10 @@ class App extends React.Component {
     this.updateLineComp([0,0],this.state.startMMP4);
   }
 
+  newGame() {
+    document.location = URLBASE;
+  }
+
   updateLineComp(score, startMMP4) {
     const seed = (startMMP4) ? 1 : 3,
       totalScore = score[0] + score[1],
@@ -196,7 +200,7 @@ class App extends React.Component {
           {/* <Grid container item xs={12} sm={6} spacing={1} className="history">
             History here
           </Grid> */}
-          <Setup startMMP4={this.state.startMMP4} onChange={(e) => this.changeStartSeed(e.target.checked)} resetScore={ () => this.resetScore() }></Setup>
+          <Setup startMMP4={this.state.startMMP4} onChange={(e) => this.changeStartSeed(e.target.checked)} newGame={ () => this.newGame() }></Setup>
           <Grid container item xs={12} spacing={1} className="confetti" 
             direction="row" justifyContent="center" alignItems="center">
             <Confetti active={this.state.weWin} config={ configetti }/>

@@ -20,10 +20,10 @@ const useStyles = makeStyles((theme) => ({
     startSeedSwitch: {
         // Styles for the startSeed switch
     },
-    reset: {
+    newGame: {
         // Styles for reset section grid item
     },
-    resetButton: {
+    newGameButton: {
         // Styles for reset button
     },
   }));
@@ -48,15 +48,15 @@ export default function Setup(props) {
                     4 MMP
                 </label>
             </Grid>
-            <Grid item className="reset">
+            <Grid item className="newGame">
                 <Button
-                    name="reset"
-                    onClick={ props.resetScore }
+                    name="newGame"
+                    onClick={ props.newGame }
                     variant="contained"
                     color="secondary"
-                    className="resetButton"
+                    className="newGameButton"
                 >
-                    Reset
+                    New Game
                 </Button>
             </Grid>
         </Grid>
