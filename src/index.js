@@ -54,7 +54,7 @@ class App extends React.Component {
       lineComp: [4,3],
       weWin: false,
       gameId: '',
-      lastChange: Math.floor(Date.now() / 1000)
+      lastChange: Date.now()
     }
   }
 
@@ -71,24 +71,31 @@ class App extends React.Component {
       gameId: queryParams.get('gameId'),
     });
     
-    await this.getRemoteState(gameId);
+    await this.getRemoteState(gameId,true);
 
     this.interval = setInterval( async (gameId) => await this.getRemoteState(gameId), 2000 );
   }
 
-  async getRemoteState( gameId = this.state.gameId ) {
+  async getRemoteState( gameId = this.state.gameId, firstLoad = false ) {
     axios.get(APIBASE + gameId)
       .then( (res) => {
-        this.setState({
-          score: [ parseInt(res.data.score[0]), parseInt(res.data.score[1]) ],
-          lineComp: [ parseInt(res.data.lineComp[0]), parseInt(res.data.lineComp[1]) ],
-          startMMP4: res.data.startMMP4,
-          lastChange: parseInt(res.data.lastChange)
-        });
+        // Only change if the server's data is more recent
+        if ( firstLoad || this.state.lastChange < parseInt(res.data.lastChange) ) {
+          console.info("Updating from remote state. 1st: " + firstLoad + " R: " + res.data.lastChange + " L: " + this.state.lastChange)
+          this.setState({
+            score: [ parseInt(res.data.score[0]), parseInt(res.data.score[1]) ],
+            lineComp: [ parseInt(res.data.lineComp[0]), parseInt(res.data.lineComp[1]) ],
+            startMMP4: res.data.startMMP4,
+            lastChange: parseInt(res.data.lastChange)
+          });
+        } else if ( this.state.lastChange > parseInt(res.data.lastChange) ) {
+          console.info("Local data is more recent than remote. R: " + res.data.lastChange + " < L: " + this.state.lastChange);
+        }
       })
       .catch ( (error) => {
         // TODO: If it's a 404 then we should immediately save the current state.
         if (error.response.status === 404) {
+          console.info("Game doesn't exist on server – creating it");
           this.setRemoteState(this.state);
         }
       });
@@ -139,6 +146,7 @@ class App extends React.Component {
 
     this.setState({
       lineComp: lineComp,
+      lastChange: changeTime,
     });
 
     // This is ugly but I don't really have time to build a custom async state update function.
